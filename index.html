@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Portfólio RH · Soluções & Inovação · 2026 · v23.9</title>
+<title>Portfólio RH · Soluções & Inovação · 2026 · v27 UX</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -46,6 +46,18 @@ main{max-width:1380px;margin:0 auto;padding:16px 14px 80px;}
 .toolbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:10px 12px;}
 .tsep{width:1px;height:20px;background:var(--border2);margin:0 2px;flex-shrink:0;}
 @media(max-width:640px){.tsep{display:none;}.toolbar{gap:6px;}}
+/* UX: filtros em lista para evitar poluição visual */
+.filter-wrap{position:relative;display:inline-block;}
+.filter-pop{display:none;position:absolute;top:calc(100% + 6px);left:0;z-index:320;background:var(--branco);border:1px solid var(--border2);border-radius:var(--rl);box-shadow:0 8px 28px rgba(0,0,0,.14);width:min(720px,calc(100vw - 32px));padding:12px;}
+.filter-pop.open{display:block;}
+.filter-grid{display:grid;grid-template-columns:repeat(2,minmax(220px,1fr));gap:12px 16px;}
+.filter-group{border-bottom:1px solid var(--border);padding-bottom:10px;}
+.filter-group:nth-last-child(-n+2){border-bottom:none;padding-bottom:0;}
+.filter-title{display:block;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.filter-options{display:flex;gap:5px;flex-wrap:wrap;}
+.filter-summary{min-width:86px;text-align:center;}
+@media(max-width:720px){.filter-pop{left:auto;right:0;width:calc(100vw - 28px);}.filter-grid{grid-template-columns:1fr;}.filter-group{border-bottom:1px solid var(--border)!important;padding-bottom:10px!important;}}
+
 .flbl{font-size:11px;font-weight:500;color:var(--text3);white-space:nowrap;}
 /* ── SEARCH ── */
 .sw{position:relative;flex:1;min-width:160px;}
@@ -181,18 +193,6 @@ tr:hover td{background:#fdf5f8;}
 .fi input:focus,.fi select:focus,.fi textarea:focus{border-color:var(--bordo-luz);background:var(--branco);}
 .fi input.err,.fi select.err,.fi textarea.err{border-color:var(--magenta);}
 .fi input:disabled,.fi select:disabled,.fi textarea:disabled{opacity:.55;cursor:not-allowed;background:var(--bg);}
-/* AI assist button */
-.ai-wrap{position:relative;}
-.ai-wrap textarea{padding-right:36px;}
-.ai-btn{position:absolute;bottom:8px;right:8px;width:26px;height:26px;border-radius:6px;border:none;background:var(--rosa);color:var(--bordo);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
-.ai-btn:hover{background:var(--magenta);color:var(--branco);}
-.ai-btn.loading{animation:pulse .8s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.ai-suggestion{background:#fdf5f8;border:1px solid var(--rosa);border-radius:var(--r);padding:10px 12px;margin-top:6px;font-size:12px;color:var(--text2);display:none;line-height:1.5;}
-.ai-suggestion.show{display:block;}
-.ai-actions{display:flex;gap:6px;margin-top:6px;}
-.ai-use{padding:5px 12px;font-size:11px;font-weight:500;font-family:var(--font);background:var(--bordo);color:var(--branco);border:none;border-radius:var(--r);cursor:pointer;}
-.ai-disc{padding:5px 12px;font-size:11px;font-family:var(--font);background:transparent;color:var(--text3);border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;}
 /* score grid */
 .fsec{grid-column:1/-1;font-size:11px;font-weight:600;color:var(--bordo);text-transform:uppercase;letter-spacing:.06em;padding-top:8px;border-top:1px solid var(--border);margin-top:2px;}
 .fsec-note{grid-column:1/-1;font-size:11px;color:var(--text3);background:var(--bg);border-radius:var(--r);padding:8px 10px;border-left:3px solid var(--cinza);}
@@ -262,13 +262,35 @@ tr:hover td{background:#fdf5f8;}
 .qb.iii{background:rgba(190,19,73,0.08);color:#BE1349;border:1px solid rgba(190,19,73,0.20);}
 .qb.iv{background:rgba(100,100,100,0.08);color:#666;border:1px solid rgba(100,100,100,0.20);}
 
+/* UX ajustes — priorizacao e formulários */
+#tab-priorizacao .prio-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;}
+#tab-priorizacao .prio-panel{display:flex;flex-direction:column;min-height:420px;}
+#tab-priorizacao .matrix-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:12px;min-height:420px;display:flex;align-items:stretch;}
+#tab-priorizacao #scatter{width:100% !important;height:420px !important;display:block;}
+@media(max-width:900px){#tab-priorizacao .prio-grid{grid-template-columns:1fr;}#tab-priorizacao .matrix-wrap{min-height:360px;}#tab-priorizacao #scatter{height:360px !important;}}
+.fi textarea::placeholder{color:#9a9a9a;}
+
+
+/* Ajustes estruturais v27 - BASIC unico, kanban utilizavel e sinalizacao */
+#tab-quarters .kwrap{overflow-x:auto;padding-bottom:12px;}
+#tab-quarters .kanban{grid-template-columns:repeat(5,minmax(245px,1fr));align-items:stretch;min-width:1260px;}
+#tab-quarters .kcol{height:calc(100vh - 190px);min-height:460px;display:flex;flex-direction:column;}
+#tab-quarters .kch{position:sticky;top:0;background:var(--bg);z-index:2;}
+#tab-quarters .kdz{flex:1;overflow-y:auto;padding:6px;}
+.kclass{display:inline-flex;align-items:center;border-radius:100px;font-size:9px;font-weight:700;padding:2px 6px;margin-left:4px;}
+.kclass.i{background:rgba(45,16,30,.12);color:#2D101E;border:1px solid rgba(45,16,30,.25);}
+.kclass.ii{background:rgba(102,31,70,.10);color:#661F46;border:1px solid rgba(102,31,70,.22);}
+.kclass.iii{background:rgba(190,19,73,.08);color:#BE1349;border:1px solid rgba(190,19,73,.20);}
+.kclass.iv{background:rgba(100,100,100,.08);color:#666;border:1px solid rgba(100,100,100,.20);}
+.unified-note{grid-column:1/-1;background:#fff8fb;border:1px solid rgba(255,125,175,.45);border-left:3px solid var(--rosa);border-radius:var(--r);padding:8px 10px;font-size:11px;color:var(--text2);line-height:1.45;}
+
 </style>
   </head>
 <body>
 <header>
   <div class="logo">
     <div class="logo-mark">RH</div>
-    <span class="logo-text">Portfólio RH <span class="logo-sub">· Soluções & Inovação · 2026 · v23.9</span></span>
+    <span class="logo-text">Portfólio RH <span class="logo-sub">· Soluções & Inovação · 2026 · v27</span></span>
   </div>
   <span class="hright" id="last-update"></span>
 </header>
@@ -291,34 +313,57 @@ tr:hover td{background:#fdf5f8;}
       <div class="acl" id="acp"></div>
     </div>
     <div class="tsep"></div>
-    <span class="flbl">Quarter</span>
-    <div id="fq-btns" style="display:flex;gap:4px;flex-wrap:wrap;">
-      <button class="fbtn" data-fq="Q1" onclick="toggleF('q','Q1',this)">Q1</button>
-      <button class="fbtn" data-fq="Q2" onclick="toggleF('q','Q2',this)">Q2</button>
-      <button class="fbtn" data-fq="Q3" onclick="toggleF('q','Q3',this)">Q3</button>
-      <button class="fbtn" data-fq="Q4" onclick="toggleF('q','Q4',this)">Q4</button>
-      <button class="fbtn" data-fq="TBD" onclick="toggleF('q','TBD',this)">Não def.</button>
-    </div>
-    <div class="tsep"></div>
-    <span class="flbl">Área</span>
-    <div class="mdd-wrap">
-      <button class="fbtn mdd-btn" id="mdd-btn-p" onclick="openMDD('p')">Todas ▾</button>
-      <div class="mdd" id="mdd-p">
-        <div class="mdd-hdr"><span>Selecionar áreas</span><button onclick="clearAreaSet('p');event.stopPropagation()">Limpar</button></div>
-        <div class="mdd-list"></div>
+    <div class="filter-wrap">
+      <button class="fbtn filter-summary" id="filter-toggle" onclick="toggleProjectFilters(event)">Filtros ▾</button>
+      <div class="filter-pop" id="project-filter-pop">
+        <div class="filter-grid">
+          <div class="filter-group">
+            <span class="filter-title">Quarter</span>
+            <div class="filter-options" id="fq-btns">
+              <button class="fbtn" data-fq="Q1" onclick="toggleF('q','Q1',this)">Q1</button>
+              <button class="fbtn" data-fq="Q2" onclick="toggleF('q','Q2',this)">Q2</button>
+              <button class="fbtn" data-fq="Q3" onclick="toggleF('q','Q3',this)">Q3</button>
+              <button class="fbtn" data-fq="Q4" onclick="toggleF('q','Q4',this)">Q4</button>
+              <button class="fbtn" data-fq="TBD" onclick="toggleF('q','TBD',this)">Não def.</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-title">Status</span>
+            <div class="filter-options">
+              <button class="fbtn" data-fs="Não iniciado" onclick="toggleF('s','Não iniciado',this)">Não iniciado</button>
+              <button class="fbtn" data-fs="Em andamento" onclick="toggleF('s','Em andamento',this)">Em andamento</button>
+              <button class="fbtn" data-fs="Em risco" onclick="toggleF('s','Em risco',this)">Em risco</button>
+              <button class="fbtn" data-fs="Atrasado" onclick="toggleF('s','Atrasado',this)">Atrasado</button>
+              <button class="fbtn" data-fs="Stand-by" onclick="toggleF('s','Stand-by',this)">Stand-by</button>
+              <button class="fbtn" data-fs="Concluído" onclick="toggleF('s','Concluído',this)">Concluído</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-title">Área</span>
+            <div class="mdd-wrap">
+              <button class="fbtn mdd-btn" id="mdd-btn-p" onclick="openMDD('p')">Todas ▾</button>
+              <div class="mdd" id="mdd-p">
+                <div class="mdd-hdr"><span>Selecionar áreas</span><button onclick="clearAreaSet('p');event.stopPropagation()">Limpar</button></div>
+                <div class="mdd-list"></div>
+              </div>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-title">Tipo</span>
+            <div class="filter-options">
+              <button class="fbtn" data-ft="Estruturante" onclick="toggleF('t','Estruturante',this)">Estruturante</button>
+              <button class="fbtn" data-ft="Melhoria" onclick="toggleF('t','Melhoria',this)">Melhoria</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-title">Origem</span>
+            <div class="filter-options">
+              <button class="fbtn" data-fo="priorizado" onclick="toggleF('o','priorizado',this)">Priorizados</button>
+              <button class="fbtn" data-fo="basic" onclick="toggleF('o','basic',this)">BASIC</button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="tsep"></div>
-    <span class="flbl">Tipo</span>
-    <div style="display:flex;gap:4px;">
-      <button class="fbtn" data-ft="Estruturante" onclick="toggleF('t','Estruturante',this)">Estruturante</button>
-      <button class="fbtn" data-ft="Melhoria" onclick="toggleF('t','Melhoria',this)">Melhoria</button>
-    </div>
-    <div class="tsep"></div>
-    <span class="flbl">Origem</span>
-    <div style="display:flex;gap:4px;">
-      <button class="fbtn" data-fo="priorizado" onclick="toggleF('o','priorizado',this)">Priorizados</button>
-      <button class="fbtn" data-fo="basic" onclick="toggleF('o','basic',this)">BASIC</button>
     </div>
     <div class="tsep"></div>
     <button class="fbtn clr" onclick="clearFilters()">✕ Limpar</button>
@@ -387,6 +432,15 @@ tr:hover td{background:#fdf5f8;}
       <button class="fbtn" data-ko="basic" onclick="toggleKF('o','basic',this)">BASIC</button>
     </div>
     <div class="tsep"></div>
+    <span class="flbl">Classificação</span>
+    <select id="k-filtro-cls" onchange="renderKanban()" style="padding:5px 10px;font-size:11px;border:1px solid #ddd;border-radius:8px;font-family:inherit;background:var(--surface);">
+      <option value="">Todas</option>
+      <option value="I">Crítico</option>
+      <option value="II">Importante</option>
+      <option value="III">Postergável</option>
+      <option value="IV">Diferir / Aguarda TI</option>
+    </select>
+    <div class="tsep"></div>
     <button class="fbtn clr" onclick="clearKFilters()">✕ Limpar</button>
   </div>
   <div class="kwrap"><div class="kanban" id="kanban"></div></div>
@@ -448,50 +502,6 @@ tr:hover td{background:#fdf5f8;}
   </div>
 </div>
 
-<!-- ABA SAÚDE DO PORTFÓLIO -->
-<div class="sec" id="tab-saude">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <select id="saude-filtro-status" onchange="renderSaude()" style="padding:5px 10px;font-size:11px;border:1px solid #e0e0e0;border-radius:6px;font-family:inherit;">
-        <option value="">Todos os status</option>
-        <option value="Em andamento">Em andamento</option>
-        <option value="Não iniciado">Não iniciado</option>
-        <option value="Stand-by">Stand-by</option>
-        <option value="Concluído">Concluído</option>
-      </select>
-      <select id="saude-filtro-farol" onchange="renderSaude()" style="padding:5px 10px;font-size:11px;border:1px solid #e0e0e0;border-radius:6px;font-family:inherit;">
-        <option value="">Todos os farois</option>
-        <option value="Atrasado">🔴 Atrasado</option>
-        <option value="Em risco">🟠 Em risco</option>
-        <option value="No prazo">🟢 No prazo</option>
-        <option value="Concluído">✅ Concluído</option>
-        <option value="Sem prazo">⚪ Sem prazo</option>
-      </select>
-      <select id="saude-filtro-area" onchange="renderSaude()" style="padding:5px 10px;font-size:11px;border:1px solid #e0e0e0;border-radius:6px;font-family:inherit;">
-        <option value="">Todas as áreas</option>
-      </select>
-    </div>
-    <div style="display:flex;gap:16px;font-size:11px;color:#666;" id="saude-alertas"></div>
-  </div>
-  <div style="overflow-x:auto;">
-    <table id="tbs" style="width:100%;border-collapse:collapse;font-size:12px;">
-      <thead>
-        <tr style="background:var(--bordo);color:#fff;">
-          <th style="padding:10px 12px;text-align:left;font-weight:600;width:28%;">Iniciativa / Projeto</th>
-          <th style="padding:10px 8px;text-align:left;font-weight:600;width:11%;">Categoria</th>
-          <th style="padding:10px 8px;text-align:center;font-weight:600;width:7%;">Farol</th>
-          <th style="padding:10px 8px;text-align:center;font-weight:600;width:9%;">Status</th>
-          <th style="padding:10px 8px;text-align:center;font-weight:600;width:7%;">Início</th>
-          <th style="padding:10px 8px;text-align:center;font-weight:600;width:7%;">Término</th>
-          <th style="padding:10px 8px;text-align:left;font-weight:600;">Histórico / Últimas atualizações</th>
-          <th style="padding:10px 8px;width:32px;"></th>
-        </tr>
-      </thead>
-      <tbody id="tbody-saude"></tbody>
-    </table>
-  </div>
-</div>
-
 <!-- ABA PIPELINE BASIC -->
 <div class="sec" id="tab-basico">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
@@ -540,21 +550,21 @@ tr:hover td{background:#fdf5f8;}
       A classificação usa a <strong>mediana do grupo</strong> como referência dinâmica:
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span class="qb i" style="white-space:nowrap;">I – Crítico</span> Negócio <strong>acima</strong> da mediana + TI <strong>viável</strong> → fazer agora</div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span class="qb ii" style="white-space:nowrap;">II – Importante</span> Negócio alto, mas TI <strong>complexo</strong> → planejar com TI</div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span class="qb iii" style="white-space:nowrap;">III – Postergável</span> Negócio abaixo da mediana, TI viável → aguardar prioridade</div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span class="qb iv" style="white-space:nowrap;">IV – Diferir</span> Negócio baixo <strong>e</strong> TI complexo → não priorizar agora</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span class="qb i" style="white-space:nowrap;">Crítico</span> Negócio <strong>acima</strong> da mediana + TI <strong>viável</strong> → fazer agora</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span class="qb ii" style="white-space:nowrap;">Importante</span> Negócio alto, mas TI <strong>complexo</strong> → planejar com TI</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span class="qb iii" style="white-space:nowrap;">Postergável</span> Negócio abaixo da mediana, TI viável → aguardar prioridade</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;"><span class="qb iv" style="white-space:nowrap;">Diferir</span> Negócio baixo <strong>e</strong> TI complexo → não priorizar agora</div>
     </div>
     <div style="font-size:10px;color:var(--text3);margin-top:6px;">Os limiares são recalculados automaticamente conforme novas iniciativas entram no pipeline.</div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
-    <div>
+  <div class="prio-grid">
+    <div class="prio-panel">
       <h3 style="font-size:13px;font-weight:600;color:var(--bordo);margin-bottom:12px;">Ranking de Iniciativas</h3>
       <div id="prank"></div>
     </div>
-    <div>
+    <div class="prio-panel">
       <h3 style="font-size:13px;font-weight:600;color:var(--bordo);margin-bottom:12px;">Matriz de Priorização</h3>
-      <canvas id="scatter" width="400" height="320"></canvas>
+      <div class="matrix-wrap"><canvas id="scatter"></canvas></div>
     </div>
   </div>
 </div>
@@ -612,7 +622,7 @@ tr:hover td{background:#fdf5f8;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 // ==================================================
-// ARQUITETURA TÉCNICA — PORTFÓLIO RH (v21)
+// ARQUITETURA TÉCNICA — PORTFÓLIO RH (v27)
 // Blocos lógicos (ordem conceitual):
 // 1. Business Rules (Governança)
 // 2. State Manager
@@ -713,7 +723,7 @@ function renderSaude(){
       <td style="padding:10px 8px;color:#666;">${p.tipo||'—'}</td>
       <td style="padding:10px 8px;text-align:center;">
         <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:12px;font-size:10px;font-weight:600;background:${f.cor}20;color:${f.cor};">
-          ${f.icon} ${f.label}
+          ${f.label}
         </span>
       </td>
       <td style="padding:10px 8px;text-align:center;">
@@ -732,7 +742,7 @@ function renderSaude(){
 
 function exportExecutivo(){
   // Download pre-built PPTX from GitHub
-  const url = 'https://daniela-ssantos.github.io/portfolio-rh/onepage_executivo.pptx';
+  const url = EXECUTIVE_PPTX_URL;
   const a = document.createElement('a');
   a.href = url;
   a.download = 'portfolio_rh_executivo.pptx';
@@ -759,10 +769,14 @@ document.addEventListener('click', function(e){
 });
  }
 // ── SUPABASE INIT ─────────────────────────────────────────
-const SUPA_URL = 'https://fotjzrkxrfpsirvlxvhq.supabase.co';
-const SUPA_KEY = 'sb_publishable_ych8CsaJQ-seuyLxPGRvlQ_1Fg3-GvZ';
-const supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-console.log('Supabase initialized:', !!supa);
+// Configuração corporativa: preencha com os dados do projeto Supabase corporativo.
+// Nunca use service_role, secret keys, senha do banco ou connection string no HTML.
+const SUPA_URL = 'https://duhciwjfftmzqugrktft.supabase.co';
+const SUPA_KEY = 'sb_publishable_BMNPMnq4iZQJWMDIGQK9dg_OBvzFMtg';
+const EXECUTIVE_PPTX_URL = './onepage_executivo.pptx';
+const SUPABASE_CONFIGURED = SUPA_URL.startsWith('https://') && !SUPA_URL.includes('COLE_AQUI') && !SUPA_KEY.includes('COLE_AQUI');
+const supa = SUPABASE_CONFIGURED ? window.supabase.createClient(SUPA_URL, SUPA_KEY) : null;
+console.log('Supabase configured:', SUPABASE_CONFIGURED);
 // ── CONSTANTS ─────────────────────────────────────────────
 const BIZ_CRITERIA=[
   {id:'risco',label:'Riscos e Conformidade',peso:5},
@@ -798,7 +812,7 @@ function calcTIScore(s){
 
 // ── CLASSIFICATION (I / II / III / IV) ───────────────────
 // Regra: mediana do Score Negócio e P40 do Score TI como limiares
-// - I–Crítico:      Negócio acima da mediana E TI acima do P40 (viável)
+// - Crítico:      Negócio acima da mediana E TI acima do P40 (viável)
 // - II–Importante:  Negócio acima da mediana MAS TI abaixo do P40 (complexo)
 // - III–Postergável:Negócio abaixo da mediana, TI viável — planejar para mais tarde
 // - IV–Diferir:     Negócio baixo E TI complexo — não priorizar agora
@@ -826,10 +840,10 @@ function classifyI_II_III(items){
     if(i.ti==null) return {...i, cls:'IV', clsLabel:'Aguarda TI', bizT, tiT};
     const bizHigh = i.biz >= bizT;
     const tiEasy  = i.ti  >= tiT;
-    if( bizHigh &&  tiEasy) return {...i, cls:'I',   clsLabel:'I – Crítico',       bizT, tiT};
-    if( bizHigh && !tiEasy) return {...i, cls:'II',  clsLabel:'II – Importante',   bizT, tiT};
-    if(!bizHigh &&  tiEasy) return {...i, cls:'III', clsLabel:'III – Postergável',  bizT, tiT};
-    return                         {...i, cls:'IV',  clsLabel:'IV – Diferir',       bizT, tiT};
+    if( bizHigh &&  tiEasy) return {...i, cls:'I',   clsLabel:'Crítico',       bizT, tiT};
+    if( bizHigh && !tiEasy) return {...i, cls:'II',  clsLabel:'Importante',   bizT, tiT};
+    if(!bizHigh &&  tiEasy) return {...i, cls:'III', clsLabel:'Postergável',  bizT, tiT};
+    return                         {...i, cls:'IV',  clsLabel:'Diferir',       bizT, tiT};
   });
 }
 function calcTotal(biz,ti,wB){return ti!=null?Math.round(biz*(wB/100)+ti*((100-wB)/100)):null;}
@@ -851,6 +865,38 @@ function autoQ(end){
   if(mo<=6)return'Q2';
   if(mo<=9)return'Q3';
   return'Q4';
+}
+
+function quarterEnd(q){
+  const year='26';
+  const map={Q1:'mar/'+year,Q2:'jun/'+year,Q3:'set/'+year,Q4:'dez/'+year};
+  return map[q]||'TBD';
+}
+function isBlankEnd(v){
+  const x=String(v||'').trim().toUpperCase();
+  return !x || x==='TBD' || x==='NAO DEFINIDO' || x==='NÃO DEFINIDO' || x==='—' || x==='-';
+}
+function normalizeQuarterFromEnd(end,currentQ){
+  const q=autoQ(end);
+  return q && q!=='TBD' ? q : (currentQ||'TBD');
+}
+function syncEndQuarter(endId,qId,source){
+  const endEl=document.getElementById(endId), qEl=document.getElementById(qId);
+  if(!endEl||!qEl) return;
+  if(source==='end'){
+    const q=autoQ(endEl.value);
+    if(q&&q!=='TBD') qEl.value=q;
+    return;
+  }
+  if(source==='quarter' && qEl.value!=='TBD' && isBlankEnd(endEl.value)){
+    endEl.value=quarterEnd(qEl.value);
+  }
+}
+function applyQuarterMove(item,newQ){
+  if(!item) return;
+  item.q=newQ;
+  item._q=newQ;
+  if(newQ!=='TBD' && isBlankEnd(item.end)) item.end=quarterEnd(newQ);
 }
 
 // ── DATA ──────────────────────────────────────────────────
@@ -900,7 +946,7 @@ const STATUS_COLOR = {
 
 const statusSet = new Set();
 // multi-select filter sets
-const fSets={q:new Set(),t:new Set(),o:new Set()};
+const fSets={q:new Set(),s:new Set(),t:new Set(),o:new Set()};
 
 const kSets={t:new Set(),o:new Set()};
 const vSets={q:new Set()};
@@ -915,9 +961,26 @@ let scatterChart=null;
 let confirmCb=null;
 
 // ── MULTI-SELECT TOGGLE FILTERS ───────────────────────────
+function toggleProjectFilters(e){
+  e.stopPropagation();
+  const pop=document.getElementById('project-filter-pop');
+  if(pop) pop.classList.toggle('open');
+}
+function updateProjectFilterButton(){
+  const btn=document.getElementById('filter-toggle');
+  if(!btn)return;
+  const active=fSets.q.size+fSets.s.size+fSets.t.size+fSets.o.size+areaSets.p.size;
+  btn.textContent=active?`Filtros (${active}) ▾`:'Filtros ▾';
+  btn.classList.toggle('sel',active>0);
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.filter-wrap')) document.getElementById('project-filter-pop')?.classList.remove('open');
+});
+
 function toggleF(dim,val,btn){
   if(fSets[dim].has(val)){fSets[dim].delete(val);btn.classList.remove('sel');}
   else{fSets[dim].add(val);btn.classList.add('sel');}
+  updateProjectFilterButton();
   renderProjetos();
 }
 function toggleKF(dim,val,btn){
@@ -932,11 +995,12 @@ function toggleVF(dim,val,btn){
 }
 function clearFilters(){
   // Clear all filter sets
-  fSets.q.clear();fSets.t.clear();fSets.o.clear();
+  fSets.q.clear();fSets.s.clear();fSets.t.clear();fSets.o.clear();
   kSets.t.clear();kSets.o.clear();
   Object.keys(areaSets).forEach(k=>areaSets[k].clear());
   // Reset all filter buttons
-  document.querySelectorAll('[data-fq],[data-ft],[data-fo],[data-kt],[data-ko]').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('[data-fq],[data-fs],[data-ft],[data-fo],[data-kt],[data-ko]').forEach(b=>b.classList.remove('sel'));
+  updateProjectFilterButton();
   // Reset search
   const sp=document.getElementById('sp');if(sp)sp.value='';
   const sb=document.getElementById('sb');if(sb)sb.value='';
@@ -949,6 +1013,7 @@ function clearFilters(){
 function clearKFilters(){
   kSets.t.clear();kSets.o.clear();
   areaSets.k.clear();
+  const kCls=document.getElementById('k-filtro-cls');if(kCls)kCls.value='';
   document.querySelectorAll('[data-kt],[data-ko]').forEach(b=>b.classList.remove('sel'));
   updMDDBtn('k');rebuildMDD('k');
   renderKanban();
@@ -970,6 +1035,7 @@ function clearBasicFilters(){
 
 function matchesF(p){
   if(fSets.q.size&&!fSets.q.has(p.q))return false;
+  if(fSets.s.size&&!fSets.s.has(p.status))return false;
   if(fSets.t.size&&![...fSets.t].some(v=>p.tipo.toLowerCase().includes(v.toLowerCase())))return false;
   if(fSets.o.size&&!fSets.o.has(p.origem))return false;
   if(areaSets.p.size&&!areaSets.p.has(p.area))return false;
@@ -1063,7 +1129,11 @@ function refreshCurrentTab(){
 function allProjectRows(){
   return[
     ...projects.map(p=>({...p})),
-    ...basicItems.map(b=>({id:b.id,nome:b.nome,tipo:'Melhoria contínua',area:b.area,prio:b.prio||'—',status:'Não iniciado',end:'TBD',q:b._q||'TBD',origem:'basic'}))
+    ...basicItems.map(b=>({
+      id:b.id,nome:b.nome,tipo:b.tipo||'Melhoria contínua',area:b.area,prio:b.prio||'—',
+      status:b.status||'Não iniciado',inicio:b.inicio||'',end:b.end||'TBD',q:b._q||b.q||'TBD',
+      origem:'basic',avanco:b.avanco||0,historico:b.historico||'',desc:b.desc||'',benef:b.benef||''
+    }))
   ];
 }
 
@@ -1116,11 +1186,19 @@ function renderTable(rows,groupByArea){
 // ── KANBAN with touch drag ────────────────────────────────
 function renderKanban(){
   const sk=(document.getElementById('sk')?.value||'').toLowerCase();
+  const clsFilter=(document.getElementById('k-filtro-cls')?.value||'');
+  const allBasicScores=basicItems.map(b=>({...b,biz:calcBizScore(b.bizScores),ti:calcTIScore(b.tiScores)}));
+  const clsMap=Object.fromEntries(classifyI_II_III(allBasicScores).map(b=>[b.id,{cls:b.cls,clsLabel:b.clsLabel}]));
   const all=allProjectRows().filter(p=>{
     if(sk&&!p.nome.toLowerCase().includes(sk))return false;
     if(areaSets.k.size&&!areaSets.k.has(p.area))return false;
-    if(kSets.t.size&&![...kSets.t].some(v=>p.tipo.toLowerCase().includes(v.toLowerCase())))return false;
+    if(kSets.t.size&&![...kSets.t].some(v=>(p.tipo||'').toLowerCase().includes(v.toLowerCase())))return false;
     if(kSets.o.size&&!kSets.o.has(p.origem))return false;
+    if(clsFilter){
+      if(p.origem!=='basic') return false;
+      const c=clsMap[p.id]?.cls||'IV';
+      if(c!==clsFilter) return false;
+    }
     return true;
   });
   const cols={Q1:{label:'Q1',cls:'kq1',color:Q_COLORS.Q1},Q2:{label:'Q2',cls:'kq2',color:Q_COLORS.Q2},Q3:{label:'Q3',cls:'kq3',color:Q_COLORS.Q3},Q4:{label:'Q4',cls:'kq4',color:Q_COLORS.Q4},TBD:{label:'Não definido',cls:'ktbd',color:Q_COLORS.TBD}};
@@ -1130,16 +1208,16 @@ function renderKanban(){
     <div class="kcol" id="kcol-${qk}">
       <div class="kch ${cd.cls}"><h3 style="color:${cd.color}">${cd.label}</h3><span class="kcount">${groups[qk].length}</span></div>
       <div class="kdz" id="kdz-${qk}" ondragover="event.preventDefault();this.classList.add('da')" ondragleave="this.classList.remove('da')" ondrop="dropCard(event,'${qk}')">
-        ${groups[qk].map(p=>`
-        <div class="kcard" draggable="true" data-id="${p.id}" data-orig="${p.origem}" ondragstart="dragStart(event)" ondragend="dragEnd(event)" ondblclick="${p.origem==='basic'?`openModalBasic(basicItems.find(x=>x.id===${p.id}))`:`openModal(${p.id})`}" title="Clique duplo para editar">
+        ${groups[qk].map(p=>{
+          const c=p.origem==='basic'?(clsMap[p.id]||{cls:'IV',clsLabel:'Aguarda TI'}):null;
+          const clsTag=c?`<span class="kclass ${String(c.cls).toLowerCase()}" title="Classificação BASIC">${c.clsLabel}</span>`:'';
+          return `<div class="kcard" draggable="true" data-id="${p.id}" data-orig="${p.origem}" ondragstart="dragStart(event)" ondragend="dragEnd(event)" ondblclick="${p.origem==='basic'?`openModalBasic(basicItems.find(x=>x.id===${p.id}))`:`openModal(${p.id})`}" title="Clique duplo para editar">
           <div class="kt">${p.nome}</div>
-          <div class="km">${tipoBadge(p)}<span>·</span>${p.area}${p.origem==='basic'?'<span class="badge b-b" style="font-size:9px;padding:2px 5px">BASIC</span>':''}</div>
-        </div>`).join('')}
+          <div class="km">${tipoBadge(p)}<span>·</span>${p.area}${p.origem==='basic'?'<span class="badge b-b" style="font-size:9px;padding:2px 5px">BASIC</span>':''}${clsTag}</div>
+        </div>`}).join('')}
       </div>
     </div>`).join('');
-  
   initTouchDrag();
-
   initTouch();
 }
 
@@ -1149,10 +1227,12 @@ function dragEnd(e){e.currentTarget.classList.remove('dragging');document.queryS
 function dropCard(e,newQ){
   e.preventDefault();document.querySelectorAll('.kdz').forEach(d=>d.classList.remove('da'));
   if(!dragId)return;
-  if(dragOrig==='basic'){const b=basicItems.find(x=>x.id===dragId);if(b)b._q=newQ;}
-  else{const p=projects.find(x=>x.id===dragId);if(p)p.q=newQ;}
-  updateQuarterDB(dragId,dragOrig,newQ);
-  dragId=null;renderKanban();renderCarga();toast('Quarter atualizado.');
+  let movedItem=null;
+  if(dragOrig==='basic') movedItem=basicItems.find(x=>x.id===dragId);
+  else movedItem=projects.find(x=>x.id===dragId);
+  applyQuarterMove(movedItem,newQ);
+  updateQuarterDB(dragId,dragOrig,newQ,movedItem?.end);
+  dragId=null;renderKanban();renderCarga();renderPrio();toast('Quarter e término atualizados.');
 }
 
 // Touch drag support for mobile
@@ -1190,9 +1270,11 @@ function initTouch(){
         const r=dz.getBoundingClientRect();
         if(t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom){
           const newQ=dz.id.replace('kdz-','');
-          if(touchOrig==='basic'){const b=basicItems.find(x=>x.id===touchId);if(b)b._q=newQ;}
-          else{const p=projects.find(x=>x.id===touchId);if(p)p.q=newQ;}
-          updateQuarterDB(touchId,touchOrig,newQ);dropped=true;
+          let movedItem=null;
+          if(touchOrig==='basic') movedItem=basicItems.find(x=>x.id===touchId);
+          else movedItem=projects.find(x=>x.id===touchId);
+          applyQuarterMove(movedItem,newQ);
+          updateQuarterDB(touchId,touchOrig,newQ,movedItem?.end);dropped=true;
         }
       });
       ghost.remove();ghost=null;card.style.opacity='';
@@ -1280,7 +1362,7 @@ function renderBasic(){
     const biz=calcBizScore(b.bizScores);
     const ti=calcTIScore(b.tiScores);
     const tot=calcTotal(biz,ti,wB);
-    const c=clsMap[b.id]||{cls:'iii',clsLabel:'III – Postergável'};
+    const c=clsMap[b.id]||{cls:'III',clsLabel:'Postergável'};
     const pc=b.prio==='Alta'?'color:var(--magenta);font-weight:500':b.prio==='Média'?'color:var(--bordo)':'color:var(--text3)';
     const frl=farolPrazo(b);
     const farolHtml=b.end&&b.end!=='TBD'
@@ -1364,15 +1446,19 @@ function renderPrioMatrix(items){
     const xLine=x.getPixelForValue(tiT);
     const yLine=y.getPixelForValue(bizT);
     c2.save();
+    c2.fillStyle='rgba(45,16,30,0.025)';c2.fillRect(xLine,top,right-xLine,yLine-top);
+    c2.fillStyle='rgba(102,31,70,0.018)';c2.fillRect(left,top,xLine-left,yLine-top);
+    c2.fillStyle='rgba(190,19,73,0.018)';c2.fillRect(xLine,yLine,right-xLine,bottom-yLine);
+    c2.fillStyle='rgba(100,100,100,0.014)';c2.fillRect(left,yLine,xLine-left,bottom-yLine);
     c2.strokeStyle='rgba(45,16,30,0.5)';c2.lineWidth=2.5;c2.setLineDash([7,4]);
     c2.beginPath();c2.moveTo(xLine,top);c2.lineTo(xLine,bottom);c2.stroke();
     c2.beginPath();c2.moveTo(left,yLine);c2.lineTo(right,yLine);c2.stroke();
     c2.setLineDash([]);
     c2.font='bold 10px sans-serif';c2.fillStyle='rgba(45,16,30,0.45)';c2.textAlign='center';
-    c2.fillText('II – Importante',  left+(xLine-left)/2,    top+14);
-    c2.fillText('I – Crítico',      xLine+(right-xLine)/2,  top+14);
-    c2.fillText('IV – Diferir',     left+(xLine-left)/2,    bottom-6);
-    c2.fillText('III – Postergável',xLine+(right-xLine)/2,  bottom-6);
+    c2.fillText('Importante',  left+(xLine-left)/2,    top+14);
+    c2.fillText('Crítico',      xLine+(right-xLine)/2,  top+14);
+    c2.fillText('Diferir',     left+(xLine-left)/2,    bottom-6);
+    c2.fillText('Postergável',xLine+(right-xLine)/2,  bottom-6);
     c2.restore();
   }};
   scatterChart=new Chart(ctx,{
@@ -1383,13 +1469,16 @@ function renderPrioMatrix(items){
       backgroundColor:CLS_COLOR[cls],
       pointRadius:7,pointHoverRadius:9}))},
     options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      layout:{padding:{top:8,right:8,bottom:4,left:4}},
       plugins:{
         legend:{display:false},
         tooltip:{callbacks:{label:c=>{const d=c.raw;return `${d.label} — N:${d.y} TI:${d.x}`;}}}
       },
       scales:{
-        x:{min:0,max:50,title:{display:true,text:'Score TI (viabilidade — maior = mais fácil)'},grid:{color:'rgba(0,0,0,0.05)'}},
-        y:{min:0,max:50,title:{display:true,text:'Score de Negócio'},grid:{color:'rgba(0,0,0,0.05)'}}
+        x:{min:0,max:50,ticks:{stepSize:10},title:{display:true,text:'Score TI (viabilidade — maior = mais fácil)'},grid:{color:'rgba(0,0,0,0.05)'}},
+        y:{min:0,max:50,ticks:{stepSize:10},title:{display:true,text:'Score de Negócio'},grid:{color:'rgba(0,0,0,0.05)'}}
       }
     },
     plugins:[quadrantPlugin]
@@ -1407,22 +1496,18 @@ function buildFormFields(type,data){
   const isEdit=!!data;
   let h=`
     <div class="fi full"><label>Nome da iniciativa <span class="req">*</span></label><input type="text" id="f-nome" value="${esc(d.nome||'')}"></div>
-    <div class="fi full ai-wrap"><label>Descrição <span class="req">*</span></label>
-      <textarea id="f-desc" rows="3">${esc(d.desc||'')}</textarea>
-      <button class="ai-btn" id="ai-desc-btn" type="button" title="Melhorar com IA" onclick="aiImprove('desc')">✦</button>
-      <div class="ai-suggestion" id="ai-desc-sug"></div>
+    <div class="fi full"><label>Descrição <span class="req">*</span></label>
+      <textarea id="f-desc" rows="3" placeholder="Descreva o problema, o processo atual e o que será melhorado">${esc(d.desc||'')}</textarea>
     </div>
-    <div class="fi full ai-wrap"><label>Benefício Econômico ou Operacional Esperado <span class="req">*</span></label>
-      <textarea id="f-benef" rows="3">${esc(d.benef||'')}</textarea>
-      <button class="ai-btn" id="ai-benef-btn" type="button" title="Gerar sugestão com IA" onclick="aiImprove('benef')">✦</button>
-      <div class="ai-suggestion" id="ai-benef-sug"></div>
+    <div class="fi full"><label>Benefício Econômico ou Operacional Esperado <span class="req">*</span></label>
+      <textarea id="f-benef" rows="3" placeholder="Ex.: redução de tempo, ganho de eficiência, padronização, qualidade dos dados ou melhoria da experiência">${esc(d.benef||'')}</textarea>
     </div>
     <div class="fi"><label>Área Solicitante <span class="req">*</span></label><select id="f-area">${AREAS_OPT}</select></div>
     <div class="fi"><label>Prioridade <span class="req">*</span></label><select id="f-prio"><option>Alta</option><option>Média</option><option>Baixa</option></select></div>`;
   if(type==='priorizado'){
     h+=`
     <div class="fi"><label>Tipo <span class="req">*</span></label><select id="f-tipo"><option>Projeto Estruturante</option><option>Melhoria contínua</option></select></div>
-    <div class="fi"><label>Status <span class="req">*</span></label><select id="f-status"><option>Não iniciado</option><option>Em andamento</option><option>Concluído</option></select></div>
+    <div class="fi"><label>Status <span class="req">*</span></label><select id="f-status"><option>Não iniciado</option><option>Em andamento</option><option>Em risco</option><option>Atrasado</option><option>Stand-by</option><option>Concluído</option></select></div>
     <div class="fi full"><label>% de Avanço <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--text3)">(usado no cálculo do farol junto com o prazo)</span></label>
       <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
         <input type="range" id="f-avanco" min="0" max="100" step="5" value="${d.avanco||0}" oninput="document.getElementById('f-avanco-val').textContent=this.value+'%'" style="flex:1;accent-color:var(--magenta);cursor:pointer;">
@@ -1431,11 +1516,12 @@ function buildFormFields(type,data){
       <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:2px;"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
     </div>
     <div class="fi"><label>Início</label><input type="text" id="f-inicio" value="${esc(d.inicio||'')}" placeholder="ex: jan/26"></div>
-    <div class="fi"><label>Término previsto <span class="req">*</span></label><input type="text" id="f-end" value="${esc(d.end||'')}" placeholder="ex: jun/26" oninput="autoFillQ()"></div>
-    <div class="fi"><label>Quarter</label><select id="f-q"><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option><option value="TBD">Não definido</option></select></div>
+    <div class="fi"><label>Término previsto <span class="req">*</span></label><input type="text" id="f-end" value="${esc(d.end||'')}" placeholder="ex: jun/26" oninput="syncEndQuarter('f-end','f-q','end')"></div>
+    <div class="fi"><label>Quarter</label><select id="f-q" onchange="syncEndQuarter('f-end','f-q','quarter')"><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option><option value="TBD">Não definido</option></select></div>
     <div class="fi full"><label>📋 Histórico / Últimas atualizações <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--text3)">(opcional — aparece no preview e na aba Projetos)</span></label><textarea id="f-historico" rows="3" placeholder="Ex: abr/26 — Reunião de alinhamento com TI realizada. Próximo passo: validação com área de negócio.">${esc(d.historico||'')}</textarea></div>`;
   } else {
     h+=`
+    <div class="fi full" id="origin-help"><div class="fsec-note" style="border-left-color:var(--rosa);margin-top:4px">Use <strong>Pipeline BASIC</strong> quando a iniciativa ainda está em análise. Use <strong>Priorizado / Em andamento</strong> quando ela virar projeto do portfólio. Os campos preenchidos serão migrados automaticamente.</div></div>
     <div class="fsec">Critérios de Negócio <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--text3)">— notas: 0, 1, 3 ou 5</span></div>
     <div class="fi full"><div class="score-grid">
     ${BIZ_CRITERIA.map(c=>`<div class="score-row">
@@ -1465,83 +1551,8 @@ function buildFormFields(type,data){
     if(document.getElementById('f-q')) document.getElementById('f-q').value=d.q||'TBD';
   }
 }
-function autoFillQ(){
-  const v=document.getElementById('f-end')?.value||'';
-  const q=autoQ(v);
-  const sel=document.getElementById('f-q');
-  if(sel)sel.value=q;
-}
+function autoFillQ(){syncEndQuarter('f-end','f-q','end');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-
-// ── AI ASSIST via Google Gemini (gratuito) ───────────────
-
-async function aiH(field, inputId, btnId, sugId, nomeId){
-  const text=(document.getElementById(inputId)?.value||'').trim();
-  if(!text){toast('Escreva algo primeiro.');return;}
-  const btn=document.getElementById(btnId);
-  btn.classList.add('loading');btn.textContent='…';
-  const sug=document.getElementById(sugId);
-  sug.classList.remove('show');sug.innerHTML='';
-  const nome=(document.getElementById(nomeId)?.value||'').trim();
-  const descText=field==='benef'
-    ?(document.getElementById('f-desc')?.value||document.getElementById('bf-desc')?.value||'')
-    :text;
-  const prompt=field==='desc'
-    ?`Você é especialista em gestão de projetos de RH. Reescreva a descrição abaixo de forma mais clara e completa para um painel de portfólio. Máximo 3 frases. Responda APENAS com a descrição melhorada.
-
-Projeto: ${nome}
-Descrição: ${text}`
-    :`Você é especialista em gestão de projetos de RH. Sugira um benefício econômico ou operacional esperado com base na descrição. Máximo 2 frases. Responda APENAS com o benefício.
-
-Projeto: ${nome}
-Descrição: ${descText}
-Benefício atual: ${text}`;
-  // IA via Worker proxy
-
-  try{
-    const res=await fetch(
-      `https://portfolio-rh-proxy.danielasilva-santos.workers.dev`,
-      {method:'POST',headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:300,temperature:0.7}})}
-    );
-    if(!res.ok)throw new Error(res.status);
-    const data=await res.json();
-    const improved=(data.candidates?.[0]?.content?.parts?.[0]?.text||'').trim();
-    if(improved){
-      sug.innerHTML=`<div style="margin-bottom:5px;line-height:1.55">${esc(improved)}</div>
-        <div class="ai-acts">
-          <button class="ai-use" onclick="useAI('${inputId}','${sugId}')">Usar</button>
-          <button class="ai-disc" onclick="document.getElementById('${sugId}').classList.remove('show')">Descartar</button>
-        </div>`;
-      sug.classList.add('show');
-    } else {
-      const errMsg=data.error?.message||JSON.stringify(data).slice(0,120);
-      sug.innerHTML=`<div style="color:var(--text3);font-size:11px">Resposta inesperada da IA: ${esc(errMsg)}</div>`;
-      sug.classList.add('show');
-    }
-  }catch(e){
-    sug.innerHTML=`<div style="color:var(--text3)">Erro ao conectar com a IA (${e.message}). Tente novamente.</div>`;
-    sug.classList.add('show');
-  }
-  btn.classList.remove('loading');btn.textContent='✦';
-}
-
-// alias usado pelos botões do modal basic
-async function aiImprove(field){ 
-  const isDesc=field==='desc';
-  await aiH(field, isDesc?'f-desc':'f-benef', isDesc?'ai-desc-btn':'ai-benef-btn', isDesc?'ai-desc-sug':'ai-benef-sug', 'f-nome');
-}
-async function aiImproveB(field){
-  const isDesc=field==='desc';
-  await aiH(field, isDesc?'bf-desc':'bf-benef', isDesc?'ai-bd-btn':'ai-bb-btn', isDesc?'ai-bds':'ai-bbs', 'bf-nome');
-}
-
-function useAI(inputId,sugId){
-  const s=document.getElementById(sugId);
-  document.getElementById(inputId).value=s.querySelector('div')?.textContent||'';
-  s.classList.remove('show');
-}
-
 
 // ── MODAL PROJETO ─────────────────────────────────────────
 function openModal(id){
@@ -1584,6 +1595,7 @@ async function saveProjeto(){
   benef:document.getElementById('f-benef').value,
   area:document.getElementById('f-area').value,
   prio:document.getElementById('f-prio').value,
+  tipo:'Melhoria contínua',status:'Não iniciado',inicio:'',end:'TBD',q:'TBD',avanco:0,historico:'',
   bizScores:bizSc,
   tiScores:{}
  };
@@ -1592,12 +1604,13 @@ async function saveProjeto(){
  toast('Iniciativa adicionada ao BASIC.');
 } else {
     const endVal=document.getElementById('f-end').value;
+    const qVal=normalizeQuarterFromEnd(endVal, document.getElementById('f-q')?.value||'TBD');
     const data={nome:document.getElementById('f-nome').value.trim(),
       desc:document.getElementById('f-desc').value,benef:document.getElementById('f-benef').value,
       area:document.getElementById('f-area').value,prio:document.getElementById('f-prio').value,
       tipo:document.getElementById('f-tipo').value,status:document.getElementById('f-status').value,
       inicio:document.getElementById('f-inicio')?.value||'',
-      end:endVal,q:document.getElementById('f-q')?.value||autoQ(endVal),origem:'priorizado',
+      end:endVal,q:qVal,origem:'priorizado',
       avanco:parseInt(document.getElementById('f-avanco')?.value||0),
       historico:document.getElementById('f-historico')?.value||''};
     if(editId){
@@ -1616,28 +1629,35 @@ async function saveProjeto(){
 // ── MODAL BASIC ───────────────────────────────────────────
 function openModalBasic(data){
   editBasicId=data?.id||null;
-  document.getElementById('mob-title').textContent=data?'Editar iniciativa BASIC':'Nova iniciativa BASIC';
-  document.getElementById('mob-sub').innerHTML=data
-    ?`Edite as informações. <button onclick="toggleTIMode()" style="background:none;border:none;color:var(--bordo-luz);font-size:12px;cursor:pointer;text-decoration:underline;font-family:var(--font)" id="ti-toggle-btn">Acessar campos de TI</button>`
-    :'Preencha as informações. Os critérios de TI serão adicionados pela equipe de TI após o cadastro.';
+  document.getElementById('mob-title').textContent=data?'Editar iniciativa':'Nova iniciativa';
+  document.getElementById('mob-sub').innerHTML='Cadastro único: edite origem, status, quarter, avanço, histórico e scores no mesmo lugar — sem trocar de aba.';
   document.getElementById('btn-del-basic').style.display=data?'block':'none';
   const d=data||{};
-  const isEdit=!!data;
   const isTIMode=data?._tiMode||false;
   document.getElementById('basic-form-fields').innerHTML=`
+    <div class="fi"><label>Origem <span class="req">*</span></label><select id="bf-origem" onchange="toggleOriginFields()"><option value="basic">Pipeline BASIC</option><option value="priorizado">Priorizado / Em andamento</option></select></div>
+    <div class="fi"><label>Quarter</label><select id="bf-q" onchange="syncEndQuarter('bf-end','bf-q','quarter')"><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option><option value="TBD">Não definido</option></select></div>
     <div class="fi full"><label>Nome da iniciativa <span class="req">*</span></label><input type="text" id="bf-nome" value="${esc(d.nome||'')}"></div>
-    <div class="fi full ai-wrap"><label>Descrição <span class="req">*</span></label>
-      <textarea id="bf-desc" rows="3">${esc(d.desc||'')}</textarea>
-      <button class="ai-btn" type="button" title="Melhorar com IA" onclick="aiImproveB('desc')">✦</button>
-      <div class="ai-suggestion" id="bai-desc-sug"></div>
+    <div class="fi full"><label>Descrição <span class="req">*</span></label>
+      <textarea id="bf-desc" rows="3" placeholder="Descreva o problema, o processo atual e o que será melhorado">${esc(d.desc||'')}</textarea>
     </div>
-    <div class="fi full ai-wrap"><label>Benefício Econômico ou Operacional Esperado <span class="req">*</span></label>
-      <textarea id="bf-benef" rows="3">${esc(d.benef||'')}</textarea>
-      <button class="ai-btn" type="button" title="Gerar sugestão com IA" onclick="aiImproveB('benef')">✦</button>
-      <div class="ai-suggestion" id="bai-benef-sug"></div>
+    <div class="fi full"><label>Benefício Econômico ou Operacional Esperado <span class="req">*</span></label>
+      <textarea id="bf-benef" rows="3" placeholder="Ex.: redução de tempo, ganho de eficiência, padronização, qualidade dos dados ou melhoria da experiência">${esc(d.benef||'')}</textarea>
     </div>
     <div class="fi"><label>Área Solicitante <span class="req">*</span></label><select id="bf-area">${AREAS_OPT}</select></div>
     <div class="fi"><label>Prioridade <span class="req">*</span></label><select id="bf-prio"><option>Alta</option><option>Média</option><option>Baixa</option></select></div>
+    <div class="fi"><label>Tipo</label><select id="bf-tipo"><option>Projeto Estruturante</option><option>Melhoria contínua</option></select></div>
+    <div class="fi"><label>Status</label><select id="bf-status"><option>Não iniciado</option><option>Em andamento</option><option>Em risco</option><option>Atrasado</option><option>Stand-by</option><option>Concluído</option></select></div>
+    <div class="fi full"><label>% de Avanço</label>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+        <input type="range" id="bf-avanco" min="0" max="100" step="5" value="${d.avanco||0}" oninput="document.getElementById('bf-avanco-val').textContent=this.value+'%'" style="flex:1;accent-color:var(--magenta);cursor:pointer;">
+        <span id="bf-avanco-val" style="font-size:13px;font-weight:600;color:var(--magenta);min-width:38px;text-align:right;">${d.avanco||0}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:2px;"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+    </div>
+    <div class="fi"><label>Início</label><input type="text" id="bf-inicio" value="${esc(d.inicio||'')}" placeholder="ex: jan/26"></div>
+    <div class="fi"><label>Término previsto</label><input type="text" id="bf-end" value="${esc(d.end||'')}" placeholder="ex: jun/26" oninput="syncEndQuarter('bf-end','bf-q','end')"></div>
+    <div class="fi full"><label>📋 Histórico / Comentários / Últimas atualizações</label><textarea id="bf-historico" rows="3" placeholder="Ex: mai/26 — Discutido em reunião. Decisão: reavaliar na próxima agenda.">${esc(d.historico||'')}</textarea></div>
     <div class="fsec">Critérios de Negócio <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--text3)">— notas: 0, 1, 3 ou 5</span></div>
     <div class="fi full"><div class="score-grid">
     ${BIZ_CRITERIA.map(c=>`<div class="score-row">
@@ -1645,83 +1665,92 @@ function openModalBasic(data){
       <select class="sc-sel" id="bbz-${c.id}">${NOTAS.map(n=>`<option value="${n}" ${(d.bizScores?.[c.id]??'')===n?'selected':''}>${n}</option>`).join('')}</select>
     </div>`).join('')}
     </div></div>
-    <div id="ti-section" style="${isTIMode?'':'display:none'}">
-      <div class="fsec">Critérios de TI <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--text3)">— preenchido por TI</span></div>
+    <div class="fsec">Critérios de TI <span style="font-weight:400;text-transform:none;font-size:11px;color:var(--text3)">— preservados ao editar, mesmo se ocultos</span></div>
+    <div class="fi full"><button type="button" onclick="toggleTIMode()" style="width:max-content;background:none;border:1px solid var(--border2);border-radius:var(--r);padding:6px 10px;color:var(--bordo-luz);font-size:12px;cursor:pointer;font-family:var(--font)" id="ti-toggle-btn">${isTIMode?'Ocultar campos de TI':'Editar campos de TI'}</button></div>
+    <div id="ti-section" style="${isTIMode?'':'display:none'};grid-column:1/-1;">
       <div class="fi full"><div class="score-grid">
       ${TI_CRITERIA.map(c=>`<div class="score-row">
         <div class="sc-label">${c.label}<span class="peso-badge">peso ${c.peso}</span></div>
         <select class="sc-sel" id="bti-${c.id}">${c.opts.map(o=>`<option value="${o.v}" ${(d.tiScores?.[c.id]||'')===o.v?'selected':''}>${o.l}</option>`).join('')}</select>
       </div>`).join('')}
       </div></div>
-    </div>
-    <div id="ti-note" style="${isTIMode?'display:none':''}">
-      <div class="fi full"><div class="fsec-note" style="border-left-color:var(--rosa);margin-top:4px">Os critérios de TI serão preenchidos pela equipe de TI após o cadastro.</div></div>
     </div>`;
   if(data){
+    document.getElementById('bf-origem').value=d.origem||'basic';
     document.getElementById('bf-area').value=d.area||AREAS[0];
     document.getElementById('bf-prio').value=d.prio||'Média';
+    document.getElementById('bf-tipo').value=d.tipo||'Melhoria contínua';
+    document.getElementById('bf-status').value=d.status||'Não iniciado';
+    document.getElementById('bf-q').value=d._q||d.q||'TBD';
+    toggleOriginFields();
+  } else {
+    document.getElementById('bf-origem').value='basic';
+    document.getElementById('bf-q').value='TBD';
+    toggleOriginFields();
   }
   document.getElementById('mob').classList.add('open');
 }
-async function aiImproveB(field){
-  const isDesc=field==='desc';
-  const inputId=isDesc?'bf-desc':'bf-benef';
-  const sugId=isDesc?'bai-desc-sug':'bai-benef-sug';
-  const text=(document.getElementById(inputId)?.value||'').trim();
-  if(!text){toast('Escreva algo primeiro.');return;}
-  const btn=event.currentTarget;
-  btn.classList.add('loading');btn.textContent='…';
-  const sug=document.getElementById(sugId);
-  sug.classList.remove('show');sug.innerHTML='';
-  const nome=(document.getElementById('bf-nome')?.value||'').trim();
-  const descText=isDesc?text:(document.getElementById('bf-desc')?.value||'');
-  const prompt=isDesc
-    ?`Você é especialista em gestão de projetos de RH. Reescreva a descrição abaixo de forma mais clara, objetiva e completa para um painel de portfólio de projetos. Máximo 3 frases. Responda APENAS com a descrição melhorada, sem comentários.\n\nProjeto: ${nome}\nDescrição atual: ${text}`
-    :`Você é especialista em gestão de projetos de RH. Com base na descrição do projeto, sugira um benefício econômico ou operacional esperado de forma clara e quantificável. Máximo 2 frases. Responda APENAS com o benefício sugerido.\n\nProjeto: ${nome}\nDescrição: ${descText}\nBenefício atual: ${text}`;
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})});
-    if(!res.ok)throw new Error('err');
-    const data=await res.json();
-    const improved=(data.content?.[0]?.text||'').trim();
-    if(improved){
-      sug.innerHTML=`<div style="margin-bottom:6px;line-height:1.55">${esc(improved)}</div><div class="ai-actions"><button class="ai-use" onclick="useAIB('${inputId}','${sugId}')">Usar esta versão</button><button class="ai-disc" onclick="document.getElementById('${sugId}').classList.remove('show')">Descartar</button></div>`;
-      sug.classList.add('show');
-    }
-  }catch(e){
-    sug.innerHTML=`<div style="color:var(--text3);font-size:12px">A IA está disponível quando o painel é aberto dentro do Claude.ai. Ao usar como arquivo HTML local, edite os textos manualmente.</div>`;
-    sug.classList.add('show');
+function toggleOriginFields(){
+  const origem=document.getElementById('bf-origem')?.value||'basic';
+  const help=document.getElementById('origin-help');
+  if(help){
+    help.innerHTML = origem==='basic'
+      ? '<div class="fsec-note" style="border-left-color:var(--rosa);margin-top:4px">Esta iniciativa permanece no Pipeline BASIC e continua aparecendo na Priorização, mesmo se estiver atribuída a um quarter.</div>'
+      : '<div class="fsec-note" style="border-left-color:#1D9E75;margin-top:4px">Ao salvar, esta iniciativa será migrada para Projetos Priorizados mantendo descrição, benefício, status, quarter, avanço e histórico.</div>';
   }
-  btn.classList.remove('loading');btn.textContent='✦';
 }
-function useAIB(inputId,sugId){
-  const sug=document.getElementById(sugId);
-  const text=sug.querySelector('div')?.textContent||'';
-  document.getElementById(inputId).value=text;
-  sug.classList.remove('show');
-}
+
+function autoFillQB(){syncEndQuarter('bf-end','bf-q','end');}
 async function saveBasicItem(){
   if(!validateFields(['bf-nome','bf-desc','bf-benef','bf-area','bf-prio'])){toast('Preencha todos os campos obrigatórios.');return;}
-  const bizSc={},tiSc={};
+  const existing=editBasicId?basicItems.find(x=>x.id===editBasicId):null;
+  const bizSc={},tiSc={...(existing?.tiScores||{})};
   BIZ_CRITERIA.forEach(c=>{bizSc[c.id]=+(document.getElementById(`bbz-${c.id}`)?.value||0);});
-  if(editBasicId){
-    const tiVisible=document.getElementById('ti-section')?.style.display!=='none';
+  const tiVisible=document.getElementById('ti-section')?.style.display!=='none';
+  if(tiVisible){
     TI_CRITERIA.forEach(c=>{
       const el=document.getElementById(`bti-${c.id}`);
-      tiSc[c.id]=(el&&tiVisible)?+(el.value||5):null;
+      if(el) tiSc[c.id]=+(el.value||5);
     });
   }
-  const item={nome:document.getElementById('bf-nome').value.trim(),
+  const endVal=document.getElementById('bf-end')?.value||'TBD';
+  const qVal=normalizeQuarterFromEnd(endVal, document.getElementById('bf-q')?.value||'TBD');
+  const origemVal=document.getElementById('bf-origem')?.value||'basic';
+  const base={nome:document.getElementById('bf-nome').value.trim(),
     desc:document.getElementById('bf-desc').value,benef:document.getElementById('bf-benef').value,
     area:document.getElementById('bf-area').value,prio:document.getElementById('bf-prio').value,
-    bizScores:bizSc,tiScores:editBasicId?tiSc:{}};
-  if(editBasicId){
-    Object.assign(basicItems.find(x=>x.id===editBasicId),item);
-    await saveBasicToDB(item,editBasicId);
-    toast('Atualizado e salvo.');
+    tipo:document.getElementById('bf-tipo')?.value||'Melhoria contínua',
+    status:document.getElementById('bf-status')?.value||'Não iniciado',
+    inicio:document.getElementById('bf-inicio')?.value||'',
+    end:endVal,
+    q:qVal,_q:qVal,
+    avanco:parseInt(document.getElementById('bf-avanco')?.value||0),
+    historico:document.getElementById('bf-historico')?.value||''};
+
+  if(origemVal==='priorizado'){
+    const projData={...base,origem:'priorizado'};
+    if(editBasicId){
+      const newId=await saveProjetoToDB(projData,null);
+      projects.push({id:newId||nextId++,...projData});
+      basicItems=basicItems.filter(x=>x.id!==editBasicId);
+      await deleteBasicDB(editBasicId);
+      toast('Iniciativa migrada para Projetos Priorizados.');
+    } else {
+      const newId=await saveProjetoToDB(projData,null);
+      projects.push({id:newId||nextId++,...projData});
+      toast('Projeto priorizado criado.');
+    }
   } else {
-    const newId=await saveBasicToDB(item,null);
-    basicItems.push({id:newId||nextId++,...item});
-    toast('Iniciativa adicionada ao BASIC.');
+    const item={...base,bizScores:bizSc,tiScores:tiSc,origem:'basic'};
+    if(editBasicId){
+      Object.assign(existing,item);
+      await saveBasicToDB(item,editBasicId);
+      toast('Atualizado e salvo sem perder os scores.');
+    } else {
+      const newId=await saveBasicToDB(item,null);
+      basicItems.push({id:newId||nextId++,...item});
+      toast('Iniciativa adicionada ao BASIC.');
+    }
   }
   closeMo('mob');renderAll();
 }
@@ -1778,7 +1807,7 @@ function toggleTIMode(){
   const showing=tiSec.style.display!=='none';
   tiSec.style.display=showing?'none':'block';
   if(tiNote)tiNote.style.display=showing?'block':'none';
-  if(btn)btn.textContent=showing?'Acessar campos de TI':'Ocultar campos de TI';
+  if(btn)btn.textContent=showing?'Editar campos de TI':'Ocultar campos de TI';
 }
 
 // ── MULTI-SELECT AREA DROPDOWN ────────────────────────────
@@ -1872,6 +1901,7 @@ function rebuildMDD(key){
 function toggleArea(key,area,checked){
   checked?areaSets[key].add(area):areaSets[key].delete(area);
   updMDDBtn(key);
+  if(key==='p') updateProjectFilterButton();
   areaConfigs[key].renderFn();
 }
 function updMDDBtn(key){
@@ -1881,7 +1911,7 @@ function updMDDBtn(key){
   else if(set.size===1){btn.textContent=[...set][0].slice(0,12)+(([...set][0].length>12)?'…':'')+' ▾';btn.classList.add('sel');}
   else{btn.textContent=set.size+' áreas ▾';btn.classList.add('sel');}
 }
-function clearAreaSet(key){areaSets[key].clear();updMDDBtn(key);rebuildMDD(key);areaConfigs[key].renderFn();}
+function clearAreaSet(key){areaSets[key].clear();updMDDBtn(key);if(key==='p') updateProjectFilterButton();rebuildMDD(key);areaConfigs[key].renderFn();}
 document.addEventListener('click',e=>{
   if(!e.target.closest('.mdd-wrap')){
     document.querySelectorAll('.mdd').forEach(d=>d.classList.remove('open'));
@@ -1907,7 +1937,10 @@ function showPreview(id, isBasic, event){
       <div class="preview-row"><div class="preview-label">Status</div><div class="preview-val">${esc(p.status||'—')}</div></div>
       <div class="preview-row"><div class="preview-label">Quarter</div><div class="preview-val">${esc(p.q||'—')}</div></div>`;
   } else {
-    content += `<div class="preview-row"><div class="preview-label">Prioridade</div><div class="preview-val">${esc(p.prio||'—')}</div></div>`;
+    content += `<div class="preview-row"><div class="preview-label">Prioridade</div><div class="preview-val">${esc(p.prio||'—')}</div></div>
+      <div class="preview-row"><div class="preview-label">Status</div><div class="preview-val">${esc(p.status||'Não iniciado')}</div></div>
+      <div class="preview-row"><div class="preview-label">Quarter</div><div class="preview-val">${esc(p._q||p.q||'TBD')}</div></div>`;
+    if(p.historico) content += `<div class="preview-row"><div class="preview-label">📋 Histórico</div><div class="preview-val" style="white-space:pre-wrap;">${esc(p.historico)}</div></div>`;
   }
   if(!isBasic){
     const f=farolPrazo(p);
@@ -1997,6 +2030,11 @@ function applySortB(rows){
 
 // ── SUPABASE DATA ─────────────────────────────────────────
 async function loadAllData(){
+  if(!supa){
+    toast('Modo demonstração: configure Supabase corporativo para salvar dados.');
+    renderAll();
+    return;
+  }
   try {
     const {data:pData,error:pErr} = await supa.from('projetos').select('*').order('id');
     if(pErr){console.error('DB error projetos:', JSON.stringify(pErr)); throw pErr;}
@@ -2022,8 +2060,10 @@ async function loadAllData(){
       basicItems = bData.map(r=>({
         id:r.id, nome:r.nome, desc:r.descricao||'', benef:r.beneficio||'',
         area:r.area||'', prio:r.prio||'Média',
+        tipo:r.tipo||'Melhoria contínua',status:r.status||'Não iniciado',inicio:r.inicio||'',end:r.termino||r.end||'TBD',
+        avanco:r.avanco||0,historico:r.historico||'',
         bizScores:r.biz_scores||{}, tiScores:r.ti_scores||{},
-        _q:r.quarter_override||null
+        q:r.quarter_override||r.quarter||'TBD', _q:r.quarter_override||r.quarter||'TBD'
       }));
     } else if(!pData || pData.length === 0){
       await seedBasicData();
@@ -2037,6 +2077,7 @@ async function loadAllData(){
 }
 
 async function seedInitialData(){
+  if(!supa) return;
   toast('Carregando dados iniciais...');
   const rows = projects.map(p=>({
     nome:p.nome, descricao:p.desc||'', beneficio:p.benef||'',
@@ -2053,6 +2094,7 @@ async function seedInitialData(){
 }
 
 async function seedBasicData(){
+  if(!supa) return;
   const rows = basicItems.map(b=>({
     nome:b.nome, descricao:b.desc||'', beneficio:b.benef||'',
     area:b.area, prio:b.prio,
@@ -2067,6 +2109,7 @@ async function seedBasicData(){
 }
 
 async function saveProjetoToDB(data, id){
+  if(!supa) throw new Error('Supabase não configurado. Confira SUPA_URL e SUPA_KEY no index.html.');
   const row = {
     nome:data.nome, descricao:data.desc, beneficio:data.benef,
     tipo:data.tipo, area:data.area, prio:data.prio,
@@ -2074,42 +2117,64 @@ async function saveProjetoToDB(data, id){
     origem:data.origem, avanco:data.avanco||0, historico:data.historico||'', updated_at:new Date().toISOString()
   };
   if(id){
-    await supa.from('projetos').update(row).eq('id',id);
+    const { error } = await supa.from('projetos').update(row).eq('id',id);
+    if(error) throw new Error('Erro ao atualizar projetos: '+error.message);
+    return id;
   } else {
-    const {data:ins}=await supa.from('projetos').insert(row).select().single();
+    const {data:ins, error}=await supa.from('projetos').insert(row).select().single();
+    if(error) throw new Error('Erro ao inserir em projetos: '+error.message);
     return ins?.id;
   }
 }
 
 async function deleteProjetoDB(id){
-  await supa.from('projetos').delete().eq('id',id);
+  if(!supa) throw new Error('Supabase não configurado.');
+  const { error } = await supa.from('projetos').delete().eq('id',id);
+  if(error) throw new Error('Erro ao excluir projeto: '+error.message);
 }
 
 async function saveBasicToDB(data, id){
+  if(!supa) throw new Error('Supabase não configurado. Confira SUPA_URL e SUPA_KEY no index.html.');
   const row = {
     nome:data.nome, descricao:data.desc, beneficio:data.benef,
     area:data.area, prio:data.prio,
     biz_scores:data.bizScores||{}, ti_scores:data.tiScores||{},
+    quarter_override:data._q||data.q||data.quarter_override||null,
+    termino:data.end||data.termino||'TBD', inicio:data.inicio||'', status:data.status||'Não iniciado', tipo:data.tipo||'Melhoria contínua', avanco:data.avanco||0, historico:data.historico||'',
     updated_at:new Date().toISOString()
   };
   if(id){
-    await supa.from('basic_items').update(row).eq('id',id);
+    const { error } = await supa.from('basic_items').update(row).eq('id',id);
+    if(error) throw new Error('Erro ao atualizar basic_items: '+error.message);
+    return id;
   } else {
-    const {data:ins}=await supa.from('basic_items').insert(row).select().single();
+    const {data:ins, error}=await supa.from('basic_items').insert(row).select().single();
+    if(error) throw new Error('Erro ao inserir em basic_items: '+error.message);
     return ins?.id;
   }
 }
 
 async function deleteBasicDB(id){
-  await supa.from('basic_items').delete().eq('id',id);
+  if(!supa) throw new Error('Supabase não configurado.');
+  const { error } = await supa.from('basic_items').delete().eq('id',id);
+  if(error) throw new Error('Erro ao excluir BASIC: '+error.message);
 }
 
-async function updateQuarterDB(id, origem, quarter){
-  if(origem==='basic'){
-    await supa.from('basic_items').update({quarter_override:quarter}).eq('id',id);
-  } else {
-    await supa.from('projetos').update({quarter:quarter}).eq('id',id);
+async function updateQuarterDB(id, origem, quarter, endDate){
+  if(!supa) return;
+  const payloadBasic={quarter_override:quarter};
+  const payloadProj={quarter:quarter};
+  if(endDate && !isBlankEnd(endDate)){
+    payloadBasic.termino=endDate;
+    payloadProj.termino=endDate;
   }
+  let result;
+  if(origem==='basic'){
+    result = await supa.from('basic_items').update(payloadBasic).eq('id',id);
+  } else {
+    result = await supa.from('projetos').update(payloadProj).eq('id',id);
+  }
+  if(result.error) throw new Error('Erro ao atualizar quarter: '+result.error.message);
 }
 
 // ── EXPORT / IMPORT ───────────────────────────────────────
@@ -2242,8 +2307,8 @@ function exportCSV(){
     ...basicItems.map(b=>({
       tipo:'BASIC', id:b.id, nome:b.nome, descricao:b.desc||'',
       beneficio:b.benef||'', tipo_projeto:'Melhoria contínua', area:b.area,
-      prioridade:b.prio, status:'Não iniciado', inicio:'',
-      termino:'TBD', quarter:b._q||'TBD', avanco:0, historico:'',
+      prioridade:b.prio, status:b.status||'Não iniciado', inicio:b.inicio||'',
+      termino:b.end||'TBD', quarter:b._q||b.q||autoQ(b.end)||'TBD', avanco:b.avanco||0, historico:b.historico||'',
       score_negocio:calcBizScore(b.bizScores)||'',
       score_ti:calcTIScore(b.tiScores)||'Aguarda TI'
     }))
@@ -2404,10 +2469,14 @@ async function executeImport(){
         if(item.existing){Object.assign(item.existing,data);await saveProjetoToDB(data,item.existing.id);updated++;}
         else{const nid=await saveProjetoToDB(data,null);projects.push({id:nid||nextId++,...data});added++;}
       }
-    }catch(err){console.error('Import err:',err);errors++;}
+    }catch(err){
+      console.error('Import err:',err);
+      errors++;
+      toast('Erro na importação: '+(err.message||err));
+    }
   }
   closeImportModal();
-  renderAll();
+  await loadAllData();
   toast(`✅ ${added} adicionados · ${updated} atualizados${errors>0?' · ⚠️ '+errors+' erros':''}`);
 }
 
